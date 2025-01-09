@@ -52,7 +52,6 @@ OneICU_profile_paper
   - Contains `.R` scripts for figure generation and analyses.
 
 ---
----
 
 ## Requirements
 
