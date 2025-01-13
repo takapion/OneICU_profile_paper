@@ -20,37 +20,82 @@ with
             round(100 * count / (select sum(count) from gender_counts), 1) as proportion
         from gender_counts
     ),
-    mortality_stats as (
+    er_mortality_clean as (
         select
             case
                 when mortality = 'er'
                 then 'ER_death'
-                when mortality = 'icu'
-                then 'ICU_death'
-                when mortality = 'in_hospital'
-                then 'In_hospital_death'
-                when mortality is null
-                then 'mortality_unknown'
-                else mortality
-            end as mortality
+                else 'ER_survived'
+            end as er_mortality
         from `medicu-beta.latest_one_icu_derived.extended_icu_stays`
     ),
-    mortality_counts as (
-        select mortality as field_name, count(*) as count
-        from mortality_stats
-        group by mortality
+    er_mortality_counts as (
+        select er_mortality as field_name, count(*) as count
+        from er_mortality_clean
+        group by er_mortality
     ),
-    mortality_proportions as (
+    er_mortality_proportions as (
         select
             field_name,
             count,
             round(
-                100 * count / (select sum(count) from mortality_counts), 1
+                100 * count / (select sum(count) from er_mortality_counts), 1
             ) as proportion
-        from mortality_counts
+        from er_mortality_counts
+    ),
+    mortality_clean as (
+        select
+            case
+                when mortality = 'icu'
+                then 'ICU_death'
+                else 'ICU_survived'
+            end as icu_death,
+            case
+                when mortality in ('icu', 'in_hospital')
+                then 'In_hospital_death'
+                when mortality is null
+                then 'In_hospital_mortality_unknown'
+                else 'In_hospital_survived'
+            end as in_hospital_death
+        from `medicu-beta.latest_one_icu_derived.extended_icu_stays`
+        where mortality is null or mortality != 'er'
+    ),
+    icu_mortality_counts as (
+        select icu_death as field_name, count(*) as count
+        from mortality_clean
+        group by icu_death
+    ),
+    icu_mortality_proportions as (
+        select
+            field_name,
+            count,
+            round(
+                100 * count / (select sum(count) from icu_mortality_counts), 1
+            ) as proportion
+        from icu_mortality_counts
+    ),
+    in_hospital_mortality_counts as (
+        select in_hospital_death as field_name, count(*) as count
+        from mortality_clean
+        group by in_hospital_death
+    ),
+    in_hospital_mortality_proportions as (
+        select
+            field_name,
+            count,
+            round(
+                100 * count / (select sum(count) from in_hospital_mortality_counts), 1
+            ) as proportion
+        from in_hospital_mortality_counts
     )
 select *
 from gender_proportions
 union all
 select *
-from mortality_proportions
+from er_mortality_proportions
+union all
+select *
+from icu_mortality_proportions
+union all
+select *
+from in_hospital_mortality_proportions
