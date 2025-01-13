@@ -11,11 +11,27 @@ with
     apache2_missing as (
         select
             'apache2_score' as field_name,
-            countif(apache2_score is null) as n_missing,
+            (
+                select count(distinct icu_stay_id)
+                from `medicu-beta.latest_one_icu_derived.extended_icu_stays`
+            )
+            - count(distinct icu_stay_id) as n_missing,
             round(
-                100 * countif(apache2_score is null) / count(*), 1
+                100 * (
+                    (
+                        select count(distinct icu_stay_id)
+                        from `medicu-beta.latest_one_icu_derived.extended_icu_stays`
+                    )
+                    - count(distinct icu_stay_id)
+                )
+                / (
+                    select count(distinct icu_stay_id)
+                    from `medicu-beta.latest_one_icu_derived.extended_icu_stays`
+                ),
+                1
             ) as proportion_missing
         from `medicu-beta.latest_one_icu_derived.apache2`
+        where apache2_score is not null
     ),
     apache3_stats as (
         select distinct
@@ -29,11 +45,27 @@ with
     apache3_missing as (
         select
             'apache3_score' as field_name,
-            countif(apache3_score is null) as n_missing,
+            (
+                select count(distinct icu_stay_id)
+                from `medicu-beta.latest_one_icu_derived.extended_icu_stays`
+            )
+            - count(distinct icu_stay_id) as n_missing,
             round(
-                100 * countif(apache3_score is null) / count(*), 1
+                100 * (
+                    (
+                        select count(distinct icu_stay_id)
+                        from `medicu-beta.latest_one_icu_derived.extended_icu_stays`
+                    )
+                    - count(distinct icu_stay_id)
+                )
+                / (
+                    select count(distinct icu_stay_id)
+                    from `medicu-beta.latest_one_icu_derived.extended_icu_stays`
+                ),
+                1
             ) as proportion_missing
         from `medicu-beta.latest_one_icu_derived.apache3`
+        where apache3_score is not null
     )
 select field_name, median, percentile_25, percentile_75, n_missing, proportion_missing
 from apache2_stats
