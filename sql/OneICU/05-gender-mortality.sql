@@ -25,8 +25,6 @@ with
             case
                 when mortality = 'er'
                 then 'ER_death'
-                when mortality is null
-                then 'ER_mortality_unknown'
                 else 'ER_survived'
             end as er_mortality
         from `medicu-beta.latest_one_icu_derived.extended_icu_stays`
@@ -50,8 +48,6 @@ with
             case
                 when mortality = 'icu'
                 then 'ICU_death'
-                when mortality is null
-                then 'ICU_mortality_unknown'
                 else 'ICU_survived'
             end as icu_death,
             case
