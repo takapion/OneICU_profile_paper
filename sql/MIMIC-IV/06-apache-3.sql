@@ -11,9 +11,23 @@ with
     apache3_missing as (
         select
             'apache3' as field_name,
-            countif(apsiii is null) as n_missing,
-            round(100 * countif(apsiii is null) / count(*), 1) as proportion_missing
+            (select count(distinct stay_id) from `mimiciv_derived.icustay_detail`)
+            - count(distinct stay_id) as n_missing,
+            round(
+                100 * (
+                    (
+                        select count(distinct stay_id)
+                        from `mimiciv_derived.icustay_detail`
+                    )
+                    - count(distinct stay_id)
+                )
+                / (
+                    select count(distinct stay_id) from `mimiciv_derived.icustay_detail`
+                ),
+                1
+            ) as proportion_missing
         from `mimiciv_derived.apsiii`
+        where apsiii is not null
     )
 select field_name, median, percentile_25, percentile_75, n_missing, proportion_missing
 from apache3_stats
