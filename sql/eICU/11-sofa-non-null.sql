@@ -400,7 +400,7 @@ with
             on rp.patientunitstayid = cn.patientunitstayid
             and rp.start_time = cn.start_time
     ),
-    sofa_24hr_nonnull as (
+    sofa_24hr_notnull as (
         select
             patientunitstayid,
             max(respiration_notnull) as respiration_notnull,
@@ -415,7 +415,7 @@ with
 select
     count(*) as n_patients,
     sum(respiration_notnull) as respiration_notnull,
-    round(100 * sum(respiration_notnull) / count(*), 1) as respiration_nonnull_rate,
+    round(100 * sum(respiration_notnull) / count(*), 1) as respiration_notnull_rate,
     sum(cardiovascular_notnull) as cardiovascular_notnull,
     round(
         100 * sum(cardiovascular_notnull) / count(*), 1
@@ -428,4 +428,4 @@ select
     round(100 * sum(renal_notnull) / count(*), 1) as renal_notnull_rate,
     sum(cns_notnull) as cns_notnull,
     round(100 * sum(cns_notnull) / count(*), 1) as cns_notnull_rate
-from sofa_24hr_nonnull
+from sofa_24hr_notnull
