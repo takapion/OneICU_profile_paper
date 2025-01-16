@@ -38,8 +38,7 @@ sofa_data_combined <- bind_rows(
     )
   )
 
-color_palette <- c('#4269D0B2', '#3CA951B2', '#FF8AB7B2')
-# color_palette <- brewer.pal(n=3,'Dark2')
+color_palette <- c('#6CC5B0FF', '#4269D0FF', '#FF8AB7FF')
 
 fig_nonnull_rates <- ggplot(sofa_data_combined, aes(x = Metric, y = NonNullRate, fill = Database)) +
   geom_bar(stat = 'identity', position = position_dodge(width = 0.8), width = 0.66, color = 'black', linewidth = 0.1) +
@@ -56,8 +55,8 @@ fig_nonnull_rates <- ggplot(sofa_data_combined, aes(x = Metric, y = NonNullRate,
     plot.title = element_text(size = 7, hjust = 0.6, color = 'black'),
     axis.title.x = element_text(size = 6, color = 'black'),
     axis.title.y = element_text(size = 6, color = 'black'),
-    axis.text.x = element_text(size = 5, angle = 45, hjust = 1, color = 'black'),
-    axis.text.y = element_text(size = 5, color = 'black'),
+    axis.text.x = element_text(size = 4, angle = 45, hjust = 1, color = 'black'),
+    axis.text.y = element_text(size = 4, color = 'black'),
     legend.title = element_text(size = 5, color = 'black'),
     legend.text = element_text(size = 4, color = 'black'),
     legend.key.size = unit(0.05, 'inch'),
