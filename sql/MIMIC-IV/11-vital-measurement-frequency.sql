@@ -16,7 +16,7 @@ with
             spo2,
         from `mimiciv_derived.vitalsign`
         inner join `mimiciv_derived.icustay_detail` using (stay_id)
-        where los_icu >= 1
+        where los_icu >= 1 and icu_intime <= charttime and charttime < icu_outtime
     ),
     vital_count as (
         select
