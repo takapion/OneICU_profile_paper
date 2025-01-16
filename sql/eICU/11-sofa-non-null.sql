@@ -4,7 +4,7 @@ with
             patientunitstayid,
             seqnum as sequence,
             seqnum * 60 as start_time,
-            (seqnum * 60) + 59 as end_time
+            (seqnum + 1) * 60 as end_time
         from
             (
                 select distinct patientunitstayid
@@ -416,16 +416,16 @@ select
     count(*) as n_patients,
     sum(respiration_notnull) as respiration_notnull,
     round(100 * sum(respiration_notnull) / count(*), 1) as respiration_nonnull_rate,
-    count(cardiovascular_notnull) as cardiovascular_notnull,
+    sum(cardiovascular_notnull) as cardiovascular_notnull,
     round(
         100 * sum(cardiovascular_notnull) / count(*), 1
     ) as cardiovascular_notnull_rate,
-    count(coagulation_notnull) as coagulation_notnull,
+    sum(coagulation_notnull) as coagulation_notnull,
     round(100 * sum(coagulation_notnull) / count(*), 1) as coagulation_notnull_rate,
-    count(liver_notnull) as liver_notnull,
+    sum(liver_notnull) as liver_notnull,
     round(100 * sum(liver_notnull) / count(*), 1) as liver_notnull_rate,
-    count(renal_notnull) as renal_notnull,
+    sum(renal_notnull) as renal_notnull,
     round(100 * sum(renal_notnull) / count(*), 1) as renal_notnull_rate,
-    count(cns_notnull) as cns_notnull,
+    sum(cns_notnull) as cns_notnull,
     round(100 * sum(cns_notnull) / count(*), 1) as cns_notnull_rate
 from sofa_24hr_nonnull
