@@ -33,7 +33,7 @@ combined_lab <- bind_rows(oneicu_lab, mimic_lab, eicu_lab) %>%
     )
   )
 
-color_palette <- c('#4269D0B2', '#3CA951B2', '#FF8AB7B2')
+color_palette <- c('#6CC5B0FF', '#4269D0FF', '#FF8AB7FF')
 
 fig_lab_measurements_box <- ggplot(combined_lab, aes(x = Metric, y = Frequency, fill = Database)) +
   geom_boxplot(outlier.shape = NA, lwd = 0.1, position = position_dodge(width = 0.9)) + # Box plot
@@ -52,8 +52,8 @@ fig_lab_measurements_box <- ggplot(combined_lab, aes(x = Metric, y = Frequency, 
     plot.title = element_text(size = 7, hjust = -2, color = 'black'),
     axis.title.x = element_text(size = 6, color = 'black'),
     axis.title.y = element_text(size = 6, color = 'black'),
-    axis.text.x = element_text(size = 5, angle = 45, hjust = 1, color = 'black'),
-    axis.text.y = element_text(size = 5, color = 'black'),
+    axis.text.x = element_text(size = 4, angle = 45, hjust = 1, color = 'black'),
+    axis.text.y = element_text(size = 4, color = 'black'),
     legend.title = element_text(size = 5, color = 'black'),
     legend.text = element_text(size = 4, color = 'black'),
     legend.key.size = unit(0.05, 'inch'),
