@@ -4,11 +4,11 @@ with
             icu_stay_id,
             time_window_index,
             respiration,
+            cardiovascular,
             coagulation,
             liver,
-            cardiovascular,
-            cns,
-            renal
+            renal,
+            cns
         from `medicu-beta.latest_one_icu_derived.sofa_hourly`
         inner join
             `medicu-beta.latest_one_icu_derived.extended_icu_stays` using (icu_stay_id)
@@ -60,15 +60,15 @@ select
     n_patients,
     respiration_notnull,
     round(100 * respiration_notnull / n_patients, 1) as respiration_nonnull_rate,
-    coagulation_notnull,
+    cardiovascular_notnull,
     round(100 * cardiovascular_notnull / n_patients, 1) as cardiovascular_nonnull_rate,
-    cns_notnull,
+    coagulation_notnull,
     round(100 * coagulation_notnull / n_patients, 1) as coagulation_nonnull_rate,
     liver_notnull,
     round(100 * liver_notnull / n_patients, 1) as liver_nonnull_rate,
     renal_notnull,
     round(100 * renal_notnull / n_patients, 1) as renal_nonnull_rate,
-    cardiovascular_notnull,
+    cns_notnull,
     round(100 * cns_notnull / n_patients, 1) as cns_nonnull_rate
 from overall_stats
 cross join respiration_stats
