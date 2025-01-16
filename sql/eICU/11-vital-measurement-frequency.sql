@@ -1,4 +1,21 @@
 with
+    unique_vital as (
+        select
+            patientunitstayid,
+            chartoffset,
+            max(temperature) as temperature,
+            max(heartrate) as heartrate,
+            max(respiratoryrate) as respiratoryrate,
+            min(ibp_systolic) as ibp_systolic,
+            min(ibp_mean) as ibp_mean,
+            min(ibp_diastolic) as ibp_diastolic,
+            min(nibp_systolic) as nibp_systolic,
+            min(nibp_mean) as nibp_mean,
+            min(nibp_diastolic) as nibp_diastolic,
+            min(spo2) as spo2
+        from `physionet-data.eicu_crd_derived.pivoted_vital`
+        group by patientunitstayid, chartoffset
+    ),
     stayed_more_than_1_day as (
         select
             patientunitstayid,
@@ -13,14 +30,14 @@ with
             nibp_systolic as non_invasive_sbp,
             nibp_mean as non_invasive_mbp,
             nibp_diastolic as non_invasive_dbp,
-            spo2,
-        from `physionet-data.eicu_crd_derived.pivoted_vital`
+            spo2
+        from unique_vital
         inner join
             `physionet-data.eicu_crd_derived.icustay_detail` using (patientunitstayid)
         where
             icu_los_hours >= 24
             and chartoffset >= 0
-            and chartoffset <= cast(icu_los_hours * 60 as int64)
+            and chartoffset <= cast(floor(icu_los_hours * 60) as int64)
     ),
     vital_count as (
         select
