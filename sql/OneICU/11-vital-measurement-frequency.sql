@@ -41,12 +41,12 @@ with
         from stayed_more_than_1_day
         group by icu_stay_id, icu_stay_hour
     )
-    select
-            icu_stay_id,
-            round(bt_count / icu_stay_hour, 1) as bt_per_hour,
-            round(hr_count / icu_stay_hour, 1) as hr_per_hour,
-            round(rr_count / icu_stay_hour, 1) as rr_per_hour,
-            round(invasive_bp_count / icu_stay_hour, 1) as invasive_bp_per_hour,
-            round(non_invasive_bp_count / icu_stay_hour, 1) as non_invasive_bp_per_hour,
-            round(spo2_count / icu_stay_hour, 1) as spo2_per_hour
-        from vital_count
+select
+    icu_stay_id as pid,
+    round(bt_count / icu_stay_hour, 1) as bt_per_hour,
+    round(hr_count / icu_stay_hour, 1) as hr_per_hour,
+    round(rr_count / icu_stay_hour, 1) as rr_per_hour,
+    round(invasive_bp_count / icu_stay_hour, 1) as invasive_bp_per_hour,
+    round(non_invasive_bp_count / icu_stay_hour, 1) as non_invasive_bp_per_hour,
+    round(spo2_count / icu_stay_hour, 1) as spo2_per_hour
+from vital_count
