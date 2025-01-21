@@ -1,43 +1,56 @@
 with
-    unique_vital as (
+    unique_vital_periodic as (
         select
             patientunitstayid,
-            chartoffset,
-            max(temperature) as temperature,
-            max(heartrate) as heartrate,
-            max(respiratoryrate) as respiratoryrate,
-            min(ibp_systolic) as ibp_systolic,
-            min(ibp_mean) as ibp_mean,
-            min(ibp_diastolic) as ibp_diastolic,
-            min(nibp_systolic) as nibp_systolic,
-            min(nibp_mean) as nibp_mean,
-            min(nibp_diastolic) as nibp_diastolic,
-            min(spo2) as spo2
-        from `physionet-data.eicu_crd_derived.pivoted_vital`
-        group by patientunitstayid, chartoffset
+            observationoffset,
+            max(temperature) as bt,
+            max(heartrate) as hr,
+            max(respiration) as rr,
+            min(systemicsystolic) as invasive_sbp,
+            min(systemicmean) as invasive_mbp,
+            min(systemicdiastolic) as invasive_dbp,
+            min(sao2) as spo2
+        from `physionet-data.eicu_crd.vitalperiodic`
+        group by patientunitstayid, observationoffset
+    ),
+    unique_vital_aperiodic as (
+        select
+            patientunitstayid,
+            observationoffset,
+            min(noninvasivesystolic) as non_invasive_sbp,
+            min(noninvasivemean) as non_invasive_mbp,
+            min(noninvasivediastolic) as non_invasive_dbp
+        from `physionet-data.eicu_crd.vitalaperiodic`
+        group by patientunitstayid, observationoffset
+    ),
+    unique_vital as (
+        select *
+        from unique_vital_periodic
+        full outer join
+            unique_vital_aperiodic using (patientunitstayid, observationoffset)
     ),
     stayed_more_than_1_day as (
         select
             patientunitstayid,
             round(icu_los_hours, 1) as icu_stay_hour,
-            chartoffset as time,
-            temperature as bt,
-            heartrate as hr,
-            respiratoryrate as rr,
-            ibp_systolic as invasive_sbp,
-            ibp_mean as invasive_mbp,
-            ibp_diastolic as invasive_dbp,
-            nibp_systolic as non_invasive_sbp,
-            nibp_mean as non_invasive_mbp,
-            nibp_diastolic as non_invasive_dbp,
+            observationoffset as time,
+            bt,
+            hr,
+            rr,
+            invasive_sbp,
+            invasive_mbp,
+            invasive_dbp,
+            non_invasive_sbp,
+            non_invasive_mbp,
+            non_invasive_dbp,
             spo2
         from unique_vital
         inner join
             `physionet-data.eicu_crd_derived.icustay_detail` using (patientunitstayid)
         where
             icu_los_hours >= 24
-            and chartoffset >= 0
-            and chartoffset <= cast(floor(icu_los_hours * 60) as int64)
+            and observationoffset >= 0
+            and observationoffset <= cast(floor(icu_los_hours * 60) as int64)
     ),
     vital_count as (
         select
