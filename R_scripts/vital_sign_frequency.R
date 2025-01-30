@@ -11,6 +11,10 @@ mimic_vital <- read.csv(paste0(data_dir, 'mimic_vital.csv')) %>%
 eicu_vital <- read.csv(paste0(data_dir, 'eicu_vital.csv')) %>% 
   mutate(Database = 'eICU')
 
+oneicu_vital %>% pull(hr_per_hour) %>% quantile(c(0.25, 0.5, 0.75))
+mimic_vital %>% pull(hr_per_hour) %>% quantile(c(0.25, 0.5, 0.75))
+eicu_vital %>% pull(hr_per_hour) %>% quantile(c(0.25, 0.5, 0.75))
+
 metrics_vital <- c('hr_per_hour', 'rr_per_hour', 'invasive_bp_per_hour',
                  'non_invasive_bp_per_hour', 'spo2_per_hour', 'bt_per_hour')
 
@@ -41,7 +45,7 @@ fig_vital_measurements_box <- ggplot(combined_vital, aes(x = Metric, y = Frequen
   scale_x_discrete(labels = c('HR', 'RR', 'Invasive BP', 'Non Invasive BP', 'SpO2', 'BT')) +
   scale_y_continuous(limits = c(0, 60)) +
   labs(
-    title = 'Comparison of Vital Measurement Frequency in Databases',
+    title = 'Vital Sign Measurement Frequency during the Entire ICU stay',
     x = NULL,
     y = 'Measurement (/hour)',
     fill = 'Database'
@@ -49,7 +53,7 @@ fig_vital_measurements_box <- ggplot(combined_vital, aes(x = Metric, y = Frequen
   theme_classic() +
   theme(
     text = element_text(family = "Arial"),
-    plot.title = element_text(size = 7, hjust = -1, color = 'black'),
+    plot.title = element_text(size = 7, hjust = -0.5, color = 'black'),
     axis.title.x = element_text(size = 6, color = 'black'),
     axis.title.y = element_text(size = 6, color = 'black'),
     axis.text.x = element_text(size = 4, angle = 45, hjust = 1, color = 'black'),

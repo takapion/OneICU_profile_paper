@@ -44,7 +44,7 @@ fig_nonnull_rates <- ggplot(sofa_data_combined, aes(x = Metric, y = NonNullRate,
   geom_bar(stat = 'identity', position = position_dodge(width = 0.8), width = 0.66, color = 'black', linewidth = 0.1) +
   scale_fill_manual(values = c('OneICU' = color_palette[1], 'MIMIC-IV' = color_palette[2], 'eICU' = color_palette[3])) +
   labs(
-    title = 'Comparison of Non-Null Rates in Databases',
+    title = 'SOFA Score Data Availability in the Frist 24 Hours',
     x = NULL,
     y = 'Non-Null Rate (%)',
     fill = 'Database'
