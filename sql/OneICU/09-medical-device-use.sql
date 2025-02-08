@@ -91,22 +91,6 @@ with
             ) as proportion
         from `medicu-beta.snapshots_one_icu.renal_replacement_therapy_20250206`
         where type in ('pe')
-    ),
-    pmx as (
-        select
-            'pmx' as field_name,
-            count(distinct icu_stay_id) as count,
-            round(
-                100
-                * count(distinct icu_stay_id)
-                / (
-                    select count(*)
-                    from `medicu-beta.snapshots_one_icu_derived.extended_icu_stays_20250206`
-                ),
-                1
-            ) as proportion
-        from `medicu-beta.snapshots_one_icu.renal_replacement_therapy_20250206`
-        where type = 'pmx'
     )
 select *
 from mv
@@ -125,6 +109,3 @@ from crrt
 union all
 select *
 from pe
-union all
-select *
-from pmx
