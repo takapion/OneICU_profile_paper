@@ -1,7 +1,7 @@
 with
     first_day_sofa_per_patients as (
         select max(sofa_24hours) as sofa
-        from `medicu-beta.latest_one_icu_derived.sofa_hourly`
+        from `medicu-beta.snapshots_one_icu_derived.sofa_hourly_20250206`
         where
             sofa_24hours is not null
             and time_window_index >= 0
@@ -21,24 +21,24 @@ with
             'sofa' as field_name,
             (
                 select count(distinct icu_stay_id)
-                from `medicu-beta.latest_one_icu_derived.extended_icu_stays`
+                from `medicu-beta.snapshots_one_icu_derived.extended_icu_stays_20250206`
             )
             - count(distinct icu_stay_id) as n_missing,
             round(
                 100 * (
                     (
                         select count(distinct icu_stay_id)
-                        from `medicu-beta.latest_one_icu_derived.extended_icu_stays`
+                        from `medicu-beta.snapshots_one_icu_derived.extended_icu_stays_20250206`
                     )
                     - count(distinct icu_stay_id)
                 )
                 / (
                     select count(distinct icu_stay_id)
-                    from `medicu-beta.latest_one_icu_derived.extended_icu_stays`
+                    from `medicu-beta.snapshots_one_icu_derived.extended_icu_stays_20250206`
                 ),
                 1
             ) as proportion_missing
-        from `medicu-beta.latest_one_icu_derived.sofa_hourly`
+        from `medicu-beta.snapshots_one_icu_derived.sofa_hourly_20250206`
         where
             sofa_24hours is not null
             and time_window_index >= 0

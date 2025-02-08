@@ -8,11 +8,11 @@ with
                 * count(distinct icu_stay_id)
                 / (
                     select count(*)
-                    from `medicu-beta.latest_one_icu_derived.extended_icu_stays`
+                    from `medicu-beta.snapshots_one_icu_derived.extended_icu_stays_20250206`
                 ),
                 1
             ) as proportion
-        from `medicu-beta.latest_one_icu.mechanical_ventilations`
+        from `medicu-beta.snapshots_one_icu.mechanical_ventilations_20250206`
     ),
     nppv as (
         select
@@ -23,11 +23,11 @@ with
                 * count(distinct icu_stay_id)
                 / (
                     select count(*)
-                    from `medicu-beta.latest_one_icu_derived.extended_icu_stays`
+                    from `medicu-beta.snapshots_one_icu_derived.extended_icu_stays_20250206`
                 ),
                 1
             ) as proportion
-        from `medicu-beta.latest_one_icu.non_invasive_positive_pressure_ventilations`
+        from `medicu-beta.snapshots_one_icu.non_invasive_positive_pressure_ventilations_20250206`
     ),
     hfo as (
         select
@@ -38,11 +38,11 @@ with
                 * count(distinct icu_stay_id)
                 / (
                     select count(*)
-                    from `medicu-beta.latest_one_icu_derived.extended_icu_stays`
+                    from `medicu-beta.snapshots_one_icu_derived.extended_icu_stays_20250206`
                 ),
                 1
             ) as proportion
-        from `medicu-beta.latest_one_icu.high_flow_oxygen_therapy`
+        from `medicu-beta.snapshots_one_icu.high_flow_oxygen_therapy_20250206`
     ),
     irrt as (
         select
@@ -53,11 +53,11 @@ with
                 * count(distinct icu_stay_id)
                 / (
                     select count(*)
-                    from `medicu-beta.latest_one_icu_derived.extended_icu_stays`
+                    from `medicu-beta.snapshots_one_icu_derived.extended_icu_stays_20250206`
                 ),
                 1
             ) as proportion
-        from `medicu-beta.latest_one_icu.renal_replacement_therapy`
+        from `medicu-beta.snapshots_one_icu.renal_replacement_therapy_20250206`
         where type in ('hd', 'ecum', 'sled')
     ),
     crrt as (
@@ -69,11 +69,11 @@ with
                 * count(distinct icu_stay_id)
                 / (
                     select count(*)
-                    from `medicu-beta.latest_one_icu_derived.extended_icu_stays`
+                    from `medicu-beta.snapshots_one_icu_derived.extended_icu_stays_20250206`
                 ),
                 1
             ) as proportion
-        from `medicu-beta.latest_one_icu.renal_replacement_therapy`
+        from `medicu-beta.snapshots_one_icu.renal_replacement_therapy_20250206`
         where type in ('chdf', 'crrt', 'chd', 'chf')
     ),
     pe as (
@@ -85,28 +85,12 @@ with
                 * count(distinct icu_stay_id)
                 / (
                     select count(*)
-                    from `medicu-beta.latest_one_icu_derived.extended_icu_stays`
+                    from `medicu-beta.snapshots_one_icu_derived.extended_icu_stays_20250206`
                 ),
                 1
             ) as proportion
-        from `medicu-beta.latest_one_icu.renal_replacement_therapy`
+        from `medicu-beta.snapshots_one_icu.renal_replacement_therapy_20250206`
         where type in ('pe')
-    ),
-    pmx as (
-        select
-            'pmx' as field_name,
-            count(distinct icu_stay_id) as count,
-            round(
-                100
-                * count(distinct icu_stay_id)
-                / (
-                    select count(*)
-                    from `medicu-beta.latest_one_icu_derived.extended_icu_stays`
-                ),
-                1
-            ) as proportion
-        from `medicu-beta.latest_one_icu.renal_replacement_therapy`
-        where type = 'pmx'
     )
 select *
 from mv
@@ -125,6 +109,3 @@ from crrt
 union all
 select *
 from pe
-union all
-select *
-from pmx

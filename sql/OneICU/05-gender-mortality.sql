@@ -8,7 +8,7 @@ with
                 then 'female'
                 else 'gender_unknown'
             end as gender
-        from `medicu-beta.latest_one_icu_derived.extended_icu_stays`
+        from `medicu-beta.snapshots_one_icu_derived.extended_icu_stays_20250206`
     ),
     gender_counts as (
         select gender as field_name, count(*) as count from gender_clean group by gender
@@ -27,7 +27,7 @@ with
                 then 'ER_death'
                 else 'ER_survived'
             end as er_mortality
-        from `medicu-beta.latest_one_icu_derived.extended_icu_stays`
+        from `medicu-beta.snapshots_one_icu_derived.extended_icu_stays_20250206`
     ),
     er_mortality_counts as (
         select er_mortality as field_name, count(*) as count
@@ -57,7 +57,7 @@ with
                 then 'In_hospital_mortality_unknown'
                 else 'In_hospital_survived'
             end as in_hospital_death
-        from `medicu-beta.latest_one_icu_derived.extended_icu_stays`
+        from `medicu-beta.snapshots_one_icu_derived.extended_icu_stays_20250206`
         where mortality is null or mortality != 'er'
     ),
     icu_mortality_counts as (

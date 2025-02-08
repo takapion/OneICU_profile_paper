@@ -5,7 +5,7 @@ with
             percentile_cont(age, 0.5) over () as median,
             percentile_cont(age, 0.25) over () as percentile_25,
             percentile_cont(age, 0.75) over () as percentile_75
-        from `medicu-beta.latest_one_icu_derived.extended_icu_stays`
+        from `medicu-beta.snapshots_one_icu_derived.extended_icu_stays_20250206`
         where age is not null
     ),
     age_missing as (
@@ -13,14 +13,14 @@ with
             'age' as field_name,
             countif(age is null) as n_missing,
             round(100 * countif(age is null) / count(*), 1) as proportion_missing
-        from `medicu-beta.latest_one_icu_derived.extended_icu_stays`
+        from `medicu-beta.snapshots_one_icu_derived.extended_icu_stays_20250206`
     ),
     los_prep as (
         select
             round(
                 cast(timestamp_diff(out_time, in_time, hour) as int64) / 24, 1
             ) as icu_los
-        from `medicu-beta.latest_one_icu_derived.extended_icu_stays`
+        from `medicu-beta.snapshots_one_icu_derived.extended_icu_stays_20250206`
         where out_time is not null
     ),
     los_stats as (
@@ -36,7 +36,7 @@ with
             'los' as field_name,
             countif(out_time is null) as n_missing,
             round(100 * countif(out_time is null) / count(*), 1) as proportion_missing
-        from `medicu-beta.latest_one_icu_derived.extended_icu_stays`
+        from `medicu-beta.snapshots_one_icu_derived.extended_icu_stays_20250206`
     )
 select field_name, median, percentile_25, percentile_75, n_missing, proportion_missing
 from age_stats
