@@ -11,7 +11,7 @@ with recategorize as (
       when category = 'null' then null
       else category
       end as category
-  from `medicu-beta.latest_one_icu_derived.extended_icu_diagnoses`
+  from `medicu-beta.snapshots_one_icu_derived.extended_icu_diagnoses_20250206`
   where primary
 ),
 overall_diag_cat as (
@@ -19,7 +19,7 @@ overall_diag_cat as (
     category,
     'overall' as icu_admission_year,
     count(*) as count,
-    round(count(*) / (select count(distinct icu_stay_id) from `medicu-beta.latest_one_icu_derived.extended_icu_diagnoses` where category is not null), 1) as proportion
+    round(count(*) / (select count(distinct icu_stay_id) from `medicu-beta.snapshots_one_icu_derived.extended_icu_diagnoses_20250206` where category is not null), 1) as proportion
   from recategorize
   where category is not null
   group by category
@@ -30,7 +30,7 @@ diag_cat as (
     icu_admission_year,
     count(*) as count,
   from recategorize
-  inner join `medicu-beta.latest_one_icu_derived.extended_icu_stays` using(icu_stay_id)
+  inner join `medicu-beta.snapshots_one_icu_derived.extended_icu_stays_20250206` using(icu_stay_id)
   where category is not null
   group by category, icu_admission_year
 ),
@@ -38,7 +38,7 @@ yearly_counts as (
   select
     icu_admission_year,
     count(distinct icu_stay_id) as total_icu_stays
-  from `medicu-beta.latest_one_icu_derived.extended_icu_stays`
+  from `medicu-beta.snapshots_one_icu_derived.extended_icu_stays_20250206`
   group by icu_admission_year
 )
 select
