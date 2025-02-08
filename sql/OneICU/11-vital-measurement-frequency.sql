@@ -15,9 +15,9 @@ with
             non_invasive_mbp,
             non_invasive_dbp,
             spo2
-        from `medicu-beta.latest_one_icu.vital_measurements`
+        from `medicu-beta.snapshots_one_icu.vital_measurements_20250206`
         inner join
-            `medicu-beta.latest_one_icu_derived.extended_icu_stays` using (icu_stay_id)
+            `medicu-beta.snapshots_one_icu_derived.extended_icu_stays_20250206` using (icu_stay_id)
         where icu_length_of_stay >= 1 and time >= in_time and time < out_time
     ),
     vital_count as (
