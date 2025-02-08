@@ -13,17 +13,17 @@ with
         from `medicu-beta.snapshots_one_icu_derived.extended_icu_stays_20250206`
         where age is not null
     ),
-    apache2_stats as (
+    apsii_stats as (
         select distinct
             icu_admission_year,
-            'apache2' as field_name,
-            percentile_cont(apache2_score, 0.5) over (
+            'apsii' as field_name,
+            percentile_cont(apsii, 0.5) over (
                 partition by icu_admission_year
             ) as median,
-            percentile_cont(apache2_score, 0.25) over (
+            percentile_cont(apsii, 0.25) over (
                 partition by icu_admission_year
             ) as percentile_25,
-            percentile_cont(apache2_score, 0.75) over (
+            percentile_cont(apsii, 0.75) over (
                 partition by icu_admission_year
             ) as percentile_75
         from `medicu-beta.snapshots_one_icu_derived.apache2_20250206`
@@ -34,5 +34,5 @@ select *
 from age_stats
 union all
 select *
-from apache2_stats
+from apsii_stats
 order by field_name, icu_admission_year
