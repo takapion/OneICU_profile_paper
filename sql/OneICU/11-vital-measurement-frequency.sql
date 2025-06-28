@@ -15,10 +15,10 @@ with
             non_invasive_mbp,
             non_invasive_dbp,
             spo2
-        from `medicu-beta.snapshots_one_icu.vital_measurements_20250206`
+        from `snapshots_one_icu.vital_measurements_20250628`
         inner join
-            `medicu-beta.snapshots_one_icu_derived.extended_icu_stays_20250206` using (icu_stay_id)
-        where icu_length_of_stay >= 1 and time >= in_time and time < out_time
+            `snapshots_one_icu_derived.extended_icu_stays_20250628` using (icu_stay_id)
+        where icu_length_of_stay >= 1 and time >= in_time and time < out_time and icu_admission_year <= 2024
     ),
     vital_count as (
         select
