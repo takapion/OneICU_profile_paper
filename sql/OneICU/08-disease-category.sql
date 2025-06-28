@@ -11,8 +11,9 @@ with recategorize as (
       when category = 'null' then null
       else category
       end as category
-  from `medicu-beta.snapshots_one_icu_derived.extended_icu_diagnoses_20250206`
-  where primary
+  from `snapshots_one_icu_derived.extended_icu_diagnoses_20250628`
+  inner join `snapshots_one_icu_derived.extended_icu_stays_20250628` using(icu_stay_id)
+  where primary and icu_admission_year <= 2024
 ),
 diag_cat as (
   select
