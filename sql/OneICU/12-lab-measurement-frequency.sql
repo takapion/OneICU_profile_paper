@@ -5,16 +5,17 @@ with
         from
             (
                 select icu_stay_id, time, field_name, value
-                from `medicu-beta.snapshots_one_icu.blood_gas_20250206`
-                where field_name in ('ph', 'lactate')
+                from `snapshots_one_icu.blood_gas_20250628`
+                inner join `snapshots_one_icu_derived.extended_icu_stays_20250628` using(icu_stay_id)
+                where field_name in ('ph', 'lactate') and icu_admission_year <= 2024
             )
             pivot (avg(value) for field_name in ('ph', 'lactate')) as pivoted_bg
     ),
     bg_count as (
         select icu_stay_id, count(ph) as ph_counts, count(lactate) as lactate_counts
-        from `medicu-beta.snapshots_one_icu_derived.extended_icu_stays_20250206`
+        from `snapshots_one_icu_derived.extended_icu_stays_20250628`
         left join bg using (icu_stay_id)
-        where in_time <= time and time < out_time
+        where in_time <= time and time < out_time and icu_stay_id <= 2024
         group by icu_stay_id
     ),
     lab as (
@@ -30,7 +31,8 @@ with
         from
             (
                 select icu_stay_id, time, field_name, value
-                from `medicu-beta.snapshots_one_icu.laboratory_tests_blood_20250206`
+                from `snapshots_one_icu.laboratory_tests_blood_20250628`
+                inner join `snapshots_one_icu_derived.extended_icu_stays_20250628` using(icu_stay_id)
                 where
                     field_name in (
                         'wbc',
@@ -40,6 +42,7 @@ with
                         'international_normalized_ratio_of_prothrombin_time',
                         'd_dimer'
                     )
+                    and icu_admission_year <= 2024
             ) pivot (
                 avg(value) for field_name in (
                     'wbc',
@@ -60,9 +63,9 @@ with
             count(albumin) as albumin_counts,
             count(inr) as inr_counts,
             count(d_dimer) as d_dimer_counts
-        from `medicu-beta.snapshots_one_icu_derived.extended_icu_stays_20250206`
+        from `snapshots_one_icu_derived.extended_icu_stays_20250628`
         left join lab using (icu_stay_id)
-        where in_time <= time and time < out_time
+        where in_time <= time and time < out_time and icu_admission_year <= 2024
         group by icu_stay_id
     ),
     exact_stay_hour as (
@@ -70,8 +73,8 @@ with
             icu_stay_id,
             cast(timestamp_diff(out_time, in_time, minute) as int64)
             / 60 as icu_stay_hour
-        from `medicu-beta.snapshots_one_icu_derived.extended_icu_stays_20250206`
-        where timestamp_diff(out_time, in_time, minute) >= 1440
+        from `snapshots_one_icu_derived.extended_icu_stays_20250628`
+        where timestamp_diff(out_time, in_time, minute) >= 1440 and icu_admission_year <= 2024
     )
 select
     icu_stay_id as pid,
