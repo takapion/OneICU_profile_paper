@@ -15,7 +15,7 @@ with
         select icu_stay_id, count(ph) as ph_counts, count(lactate) as lactate_counts
         from `snapshots_one_icu_derived.extended_icu_stays_20250628`
         left join bg using (icu_stay_id)
-        where in_time <= time and time < out_time and icu_stay_id <= 2024
+        where in_time <= time and time < out_time and icu_admission_year <= 2024
         group by icu_stay_id
     ),
     lab as (
