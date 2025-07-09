@@ -5,7 +5,7 @@ with
             percentile_cont(apsii, 0.5) over () as median,
             percentile_cont(apsii, 0.25) over () as percentile_25,
             percentile_cont(apsii, 0.75) over () as percentile_75
-        from `medicu-beta.snapshots_one_icu_derived.apache2_20250206`
+        from `medicu-biz.latest_one_icu_derived.apache2`
         where apsii is not null
     ),
     apsii_missing as (
@@ -13,24 +13,24 @@ with
             'apsii' as field_name,
             (
                 select count(distinct icu_stay_id)
-                from `medicu-beta.snapshots_one_icu_derived.extended_icu_stays_20250206`
+                from `medicu-biz.latest_one_icu_derived.extended_icu_stays`
             )
             - count(distinct icu_stay_id) as n_missing,
             round(
                 100 * (
                     (
                         select count(distinct icu_stay_id)
-                        from `medicu-beta.snapshots_one_icu_derived.extended_icu_stays_20250206`
+                        from `medicu-biz.latest_one_icu_derived.extended_icu_stays`
                     )
                     - count(distinct icu_stay_id)
                 )
                 / (
                     select count(distinct icu_stay_id)
-                    from `medicu-beta.snapshots_one_icu_derived.extended_icu_stays_20250206`
+                    from `medicu-biz.latest_one_icu_derived.extended_icu_stays`
                 ),
                 1
             ) as proportion_missing
-        from `medicu-beta.snapshots_one_icu_derived.apache2_20250206`
+        from `medicu-biz.latest_one_icu_derived.apache2`
         where apsii is not null
     ),
     apsiii_stats as (
@@ -39,7 +39,7 @@ with
             percentile_cont(apsiii, 0.5) over () as median,
             percentile_cont(apsiii, 0.25) over () as percentile_25,
             percentile_cont(apsiii, 0.75) over () as percentile_75
-        from `medicu-beta.snapshots_one_icu_derived.apache3_20250206`
+        from `medicu-biz.latest_one_icu_derived.apache3`
         where apsiii is not null
     ),
     apsiii_missing as (
@@ -47,24 +47,24 @@ with
             'apsiii' as field_name,
             (
                 select count(distinct icu_stay_id)
-                from `medicu-beta.snapshots_one_icu_derived.extended_icu_stays_20250206`
+                from `medicu-biz.latest_one_icu_derived.extended_icu_stays`
             )
             - count(distinct icu_stay_id) as n_missing,
             round(
                 100 * (
                     (
                         select count(distinct icu_stay_id)
-                        from `medicu-beta.snapshots_one_icu_derived.extended_icu_stays_20250206`
+                        from `medicu-biz.latest_one_icu_derived.extended_icu_stays`
                     )
                     - count(distinct icu_stay_id)
                 )
                 / (
                     select count(distinct icu_stay_id)
-                    from `medicu-beta.snapshots_one_icu_derived.extended_icu_stays_20250206`
+                    from `medicu-biz.latest_one_icu_derived.extended_icu_stays`
                 ),
                 1
             ) as proportion_missing
-        from `medicu-beta.snapshots_one_icu_derived.apache3_20250206`
+        from `medicu-biz.latest_one_icu_derived.apache3`
         where apsiii is not null
     )
 select field_name, median, percentile_25, percentile_75, n_missing, proportion_missing

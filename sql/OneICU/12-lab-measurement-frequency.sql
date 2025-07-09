@@ -5,14 +5,14 @@ with
         from
             (
                 select icu_stay_id, time, field_name, value
-                from `medicu-beta.snapshots_one_icu.blood_gas_20250206`
+                from `medicu-biz.latest_one_icu.blood_gas`
                 where field_name in ('ph', 'lactate')
             )
             pivot (avg(value) for field_name in ('ph', 'lactate')) as pivoted_bg
     ),
     bg_count as (
         select icu_stay_id, count(ph) as ph_counts, count(lactate) as lactate_counts
-        from `medicu-beta.snapshots_one_icu_derived.extended_icu_stays_20250206`
+        from `medicu-biz.latest_one_icu_derived.extended_icu_stays`
         left join bg using (icu_stay_id)
         where in_time <= time and time < out_time
         group by icu_stay_id
@@ -30,7 +30,7 @@ with
         from
             (
                 select icu_stay_id, time, field_name, value
-                from `medicu-beta.snapshots_one_icu.laboratory_tests_blood_20250206`
+                from `medicu-biz.latest_one_icu.laboratory_tests_blood`
                 where
                     field_name in (
                         'wbc',
@@ -60,7 +60,7 @@ with
             count(albumin) as albumin_counts,
             count(inr) as inr_counts,
             count(d_dimer) as d_dimer_counts
-        from `medicu-beta.snapshots_one_icu_derived.extended_icu_stays_20250206`
+        from `medicu-biz.latest_one_icu_derived.extended_icu_stays`
         left join lab using (icu_stay_id)
         where in_time <= time and time < out_time
         group by icu_stay_id
@@ -70,7 +70,7 @@ with
             icu_stay_id,
             cast(timestamp_diff(out_time, in_time, minute) as int64)
             / 60 as icu_stay_hour
-        from `medicu-beta.snapshots_one_icu_derived.extended_icu_stays_20250206`
+        from `medicu-biz.latest_one_icu_derived.extended_icu_stays`
         where timestamp_diff(out_time, in_time, minute) >= 1440
     )
 select

@@ -11,7 +11,7 @@ with recategorize as (
       when category = 'null' then null
       else category
       end as category
-  from `medicu-beta.snapshots_one_icu_derived.extended_icu_diagnoses_20250206`
+  from `medicu-biz.latest_one_icu_derived.extended_icu_diagnoses`
   where primary
 ),
 diag_cat as (

@@ -62,7 +62,7 @@ fig_mortality_over_time <- ggplot(mortality_over_time, aes(x = icu_admission_yea
   geom_line(aes(y = in_hospital_mortality, color = 'In-Hospital Mortality'), linewidth = 0.6) +
   scale_color_manual(values = c('ICU Mortality' = '#A463F2FF', 'In-Hospital Mortality' = '#FF8AB7FF')) +
   scale_x_continuous(limits = c(2013, 2024), breaks = c(2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024)) +
-  scale_y_continuous(limits = c(4, 16)) +
+  scale_y_continuous(limits = c(0, 12)) +
   labs(title = 'Mortality Over Time',
        x = 'ICU Admission Year',
        y = 'Mortality (%)',

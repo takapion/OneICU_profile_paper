@@ -10,7 +10,7 @@ with
             percentile_cont(age, 0.75) over (
                 partition by icu_admission_year
             ) as percentile_75
-        from `medicu-beta.snapshots_one_icu_derived.extended_icu_stays_20250206`
+        from `medicu-biz.latest_one_icu_derived.extended_icu_stays`
         where age is not null
     ),
     apsii_stats as (
@@ -26,9 +26,9 @@ with
             percentile_cont(apsii, 0.75) over (
                 partition by icu_admission_year
             ) as percentile_75
-        from `medicu-beta.snapshots_one_icu_derived.apache2_20250206`
+        from `medicu-biz.latest_one_icu_derived.apache2`
         inner join
-            `medicu-beta.snapshots_one_icu_derived.extended_icu_stays_20250206` using (icu_stay_id)
+            `medicu-biz.latest_one_icu_derived.extended_icu_stays` using (icu_stay_id)
     )
 select *
 from age_stats

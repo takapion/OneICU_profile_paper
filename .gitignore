@@ -1,6 +1,9 @@
 *.DS_Store
 fig_sofa_dic.tiff
 
+# patient level data
+data/*.csv
+
 # History files
 .Rhistory
 .Rapp.history
