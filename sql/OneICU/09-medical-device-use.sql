@@ -9,6 +9,7 @@ with
                 / (
                     select count(*)
                     from `medicu-biz.latest_one_icu_derived.extended_icu_stays`
+                    where icu_admission_year <= 2024
                 ),
                 1
             ) as proportion
@@ -24,10 +25,13 @@ with
                 / (
                     select count(*)
                     from `medicu-biz.latest_one_icu_derived.extended_icu_stays`
+                    where icu_admission_year <= 2024
                 ),
                 1
             ) as proportion
         from `medicu-biz.latest_one_icu.non_invasive_positive_pressure_ventilations`
+        inner join `medicu-biz.latest_one_icu_derived.extended_icu_stays` using(icu_stay_id)
+        where icu_admission_year <= 2024
     ),
     hfo as (
         select
@@ -39,10 +43,13 @@ with
                 / (
                     select count(*)
                     from `medicu-biz.latest_one_icu_derived.extended_icu_stays`
+                    where icu_admission_year <= 2024
                 ),
                 1
             ) as proportion
         from `medicu-biz.latest_one_icu.high_flow_oxygen_therapy`
+        inner join `medicu-biz.latest_one_icu_derived.extended_icu_stays` using(icu_stay_id)
+        where icu_admission_year <= 2024
     ),
     irrt as (
         select
@@ -54,11 +61,13 @@ with
                 / (
                     select count(*)
                     from `medicu-biz.latest_one_icu_derived.extended_icu_stays`
+                    where icu_admission_year <= 2024
                 ),
                 1
             ) as proportion
         from `medicu-biz.latest_one_icu.renal_replacement_therapy`
-        where type in ('hd', 'ecum', 'sled')
+        inner join `medicu-biz.latest_one_icu_derived.extended_icu_stays` using(icu_stay_id)
+        where type in ('hd', 'ecum', 'sled') and icu_admission_year <= 2024
     ),
     crrt as (
         select
@@ -70,11 +79,13 @@ with
                 / (
                     select count(*)
                     from `medicu-biz.latest_one_icu_derived.extended_icu_stays`
+                    where icu_admission_year <= 2024
                 ),
                 1
             ) as proportion
         from `medicu-biz.latest_one_icu.renal_replacement_therapy`
-        where type in ('chdf', 'crrt', 'chd', 'chf')
+        inner join `medicu-biz.latest_one_icu_derived.extended_icu_stays` using(icu_stay_id)
+        where type in ('chdf', 'crrt', 'chd', 'chf') and icu_admission_year <= 2024
     ),
     pe as (
         select
@@ -86,11 +97,13 @@ with
                 / (
                     select count(*)
                     from `medicu-biz.latest_one_icu_derived.extended_icu_stays`
+                    where icu_admission_year <= 2024
                 ),
                 1
             ) as proportion
         from `medicu-biz.latest_one_icu.renal_replacement_therapy`
-        where type in ('pe')
+        inner join `medicu-biz.latest_one_icu_derived.extended_icu_stays` using(icu_stay_id)
+        where type in ('pe') and icu_admission_year <= 2024
     )
 select *
 from mv
