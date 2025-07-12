@@ -15,6 +15,7 @@ with
                 1
             ) as in_hospital_mortality
         from `medicu-biz.latest_one_icu_derived.extended_icu_stays`
+        where icu_admission_year <= 2024
         group by icu_admission_year
     ),
     mv_use as (
@@ -26,6 +27,7 @@ with
         from `medicu-biz.latest_one_icu_derived.extended_icu_stays` ic
         left join
             `medicu-biz.latest_one_icu.mechanical_ventilations` mv using (icu_stay_id)
+        where icu_admission_year <= 2024
         group by icu_admission_year
     )
 select *
