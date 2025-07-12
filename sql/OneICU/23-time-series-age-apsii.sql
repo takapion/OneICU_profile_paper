@@ -11,7 +11,7 @@ with
                 partition by icu_admission_year
             ) as percentile_75
         from `medicu-biz.latest_one_icu_derived.extended_icu_stays`
-        where age is not null
+        where age is not null and icu_admission_year <= 2024
     ),
     apsii_stats as (
         select distinct
@@ -29,6 +29,7 @@ with
         from `medicu-biz.latest_one_icu_derived.apache2`
         inner join
             `medicu-biz.latest_one_icu_derived.extended_icu_stays` using (icu_stay_id)
+        where icu_admission_year <= 2024
     )
 select *
 from age_stats
