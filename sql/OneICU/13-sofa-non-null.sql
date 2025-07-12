@@ -12,7 +12,7 @@ with
         from `medicu-biz.latest_one_icu_derived.sofa_hourly`
         inner join
             `medicu-biz.latest_one_icu_derived.extended_icu_stays` using (icu_stay_id)
-        where icu_length_of_stay >= 1
+        where icu_length_of_stay >= 1 and icu_admission_year <= 2024
     ),
     overall_stats as (
         select count(distinct icu_stay_id) as n_patients from stayed_more_than_1_day
