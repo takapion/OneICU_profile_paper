@@ -2,10 +2,12 @@ with
     first_day_sofa_per_patients as (
         select max(sofa_24hours) as sofa
         from `medicu-biz.latest_one_icu_derived.sofa_hourly`
+        inner join `medicu-biz.latest_one_icu_derived.extended_icu_stays` using(icu_stay_id)
         where
             sofa_24hours is not null
             and time_window_index >= 0
             and time_window_index < 24
+            and icu_admission_year <= 2024
         group by icu_stay_id
     ),
     sofa_stats as (
@@ -22,6 +24,7 @@ with
             (
                 select count(distinct icu_stay_id)
                 from `medicu-biz.latest_one_icu_derived.extended_icu_stays`
+                where icu_admission_year <= 2024
             )
             - count(distinct icu_stay_id) as n_missing,
             round(
@@ -29,20 +32,24 @@ with
                     (
                         select count(distinct icu_stay_id)
                         from `medicu-biz.latest_one_icu_derived.extended_icu_stays`
+                        where icu_admission_year <= 2024
                     )
                     - count(distinct icu_stay_id)
                 )
                 / (
                     select count(distinct icu_stay_id)
                     from `medicu-biz.latest_one_icu_derived.extended_icu_stays`
+                    where icu_admission_year <= 2024
                 ),
                 1
             ) as proportion_missing
         from `medicu-biz.latest_one_icu_derived.sofa_hourly`
+        inner join `medicu-biz.latest_one_icu_derived.extended_icu_stays` using(icu_stay_id)
         where
             sofa_24hours is not null
             and time_window_index >= 0
             and time_window_index < 24
+            and icu_admission_year <= 2024
     )
 select field_name, median, percentile_25, percentile_75, n_missing, proportion_missing
 from sofa_stats
