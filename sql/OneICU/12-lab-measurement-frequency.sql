@@ -72,6 +72,7 @@ with
             / 60 as icu_stay_hour
         from `medicu-biz.latest_one_icu_derived.extended_icu_stays`
         where timestamp_diff(out_time, in_time, minute) >= 1440
+        and icu_admission_year <= 2024
     )
 select
     icu_stay_id as pid,
