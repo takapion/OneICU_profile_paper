@@ -19,6 +19,7 @@ with
         inner join
             `medicu-biz.latest_one_icu_derived.extended_icu_stays` using (icu_stay_id)
         where icu_length_of_stay >= 1 and time >= in_time and time < out_time
+        and icu_admission_year <= 2024
     ),
     vital_count as (
         select
