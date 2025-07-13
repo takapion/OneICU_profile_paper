@@ -30,7 +30,7 @@ yearly_stats as (
     category,
     icu_admission_year,
     count(*) as count,
-    round(count(*) * 100 / sum(count(*)) over(), 1) as proportion
+    round(count(*) * 100 / sum(count(*)) over(partition by icu_admission_year), 1) as proportion
   from recategorize
   inner join `medicu-biz.latest_one_icu_derived.extended_icu_stays` using(icu_stay_id)
   where category is not null and icu_admission_year <= 2024
