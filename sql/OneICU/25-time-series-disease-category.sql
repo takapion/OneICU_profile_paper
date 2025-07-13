@@ -2,54 +2,43 @@ with recategorize as (
   select
     icu_stay_id,
     case
-      when category = 'infection' or category = 'sepsis' then 'sepsis_infection'
+      when category in ('infection', 'sepsis') then 'sepsis_infection'
       when category in ('poisoning', 'burn', 'temperature_disorder', 'hanging_asphyxiation') then 'toxicological_environmental_disorders'
-      when category = 'null' then null
+      when category = 'null' then 'other'
+      when category is null then 'other'
       else category
       end as category
-  from `medicu-biz.latest_one_icu_derived.extended_icu_diagnoses`
-  where primary
+  from `medicu-biz.latest_one_icu_derived.extended_icu_stays`
+  left join (
+    select icu_stay_id, category
+    from `medicu-biz.latest_one_icu_derived.unioned_icu_diagnoses`
+    where primary
+  ) using(icu_stay_id)
+  where icu_admission_year <= 2024
 ),
 overall_diag_cat as (
   select
     category,
     'overall' as icu_admission_year,
     count(*) as count,
-    round(count(*) / (select count(distinct icu_stay_id) from recategorize where category is not null) * 100, 1) as overall_proportion
+    round(count(*) * 100 / sum(count(*)) over(), 1) as overall_proportion
   from recategorize
-  where category is not null
   group by category
 ),
-diag_cat as (
+yearly_stats as (
   select
     category,
     icu_admission_year,
     count(*) as count,
+    round(count(*) * 100 / sum(count(*)) over(), 1) as proportion
   from recategorize
   inner join `medicu-biz.latest_one_icu_derived.extended_icu_stays` using(icu_stay_id)
-  where category is not null
+  where category is not null and icu_admission_year <= 2024
   group by category, icu_admission_year
-),
-yearly_counts as (
-  select
-    icu_admission_year,
-    count(distinct icu_stay_id) as total_icu_stays
-  from `medicu-biz.latest_one_icu_derived.extended_icu_stays`
-  group by icu_admission_year
-),
-yearly_stats as (
-  select
-    d.category,
-    d.icu_admission_year,
-    d.count,
-    round(100 * d.count / yc.total_icu_stays, 1) as proportion
-  from diag_cat d
-  inner join yearly_counts yc using(icu_admission_year)
 ),
 pivoted as (
   select
     category,
-    max(case when icu_admission_year = 2012 then concat(cast(count as string), ' (', cast(proportion as string), '%)') end) as year_2012,
     max(case when icu_admission_year = 2013 then concat(cast(count as string), ' (', cast(proportion as string), '%)') end) as year_2013,
     max(case when icu_admission_year = 2014 then concat(cast(count as string), ' (', cast(proportion as string), '%)') end) as year_2014,
     max(case when icu_admission_year = 2015 then concat(cast(count as string), ' (', cast(proportion as string), '%)') end) as year_2015,
