@@ -1,7 +1,7 @@
 with
     first_day_sofa_per_patients as (
         select max(sofa_24hours) as sofa
-        from `medicu-biz.latest_one_icu_derived.sofa_hourly`
+        from `medicu-biz.snapshots_one_icu_derived.sofa_hourly_20250716`
         inner join `medicu-biz.snapshots_one_icu_derived.extended_icu_stays_20250716` using(icu_stay_id)
         where
             sofa_24hours is not null
@@ -43,7 +43,7 @@ with
                 ),
                 1
             ) as proportion_missing
-        from `medicu-biz.latest_one_icu_derived.sofa_hourly`
+        from `medicu-biz.snapshots_one_icu_derived.sofa_hourly_20250716`
         inner join `medicu-biz.snapshots_one_icu_derived.extended_icu_stays_20250716` using(icu_stay_id)
         where
             sofa_24hours is not null
