@@ -15,7 +15,7 @@ with
                     ) as int64
                 )
             ) as time_window_indices
-        from `medicu-biz.latest_one_icu.icu_stays` it
+        from `medicu-biz.snapshots_one_icu.icu_stays_20250716` it
         where icu_admission_year <= 2024
     ),
     generate_time_windows as (
@@ -61,8 +61,8 @@ with
             end as mechanical_ventilation_used
         from calculate_start_time
         inner join
-            `medicu-biz.latest_one_icu.mechanical_ventilations` using (icu_stay_id)
-        inner join `medicu-beta.latest_one_icu_derived.extended_icu_stays` using(icu_stay_id)
+            `medicu-biz.snapshots_one_icu.mechanical_ventilations_20250716` using (icu_stay_id)
+        inner join `medicu-biz.snapshots_one_icu_derived.extended_icu_stays_20250716` using(icu_stay_id)
         where icu_admission_year <= 2024
     ),
     mv_index_summarized as (

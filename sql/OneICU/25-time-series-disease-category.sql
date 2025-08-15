@@ -8,10 +8,10 @@ with recategorize as (
       when category is null then 'other'
       else category
       end as category
-  from `medicu-biz.latest_one_icu_derived.extended_icu_stays`
+  from `medicu-biz.snapshots_one_icu_derived.extended_icu_stays_20250716`
   left join (
     select icu_stay_id, category
-    from `medicu-biz.latest_one_icu_derived.unioned_icu_diagnoses`
+    from `medicu-biz.snapshots_one_icu_derived.unioned_icu_diagnoses_20250716`
     where primary
   ) using(icu_stay_id)
   where icu_admission_year <= 2024
@@ -32,7 +32,7 @@ yearly_stats as (
     count(*) as count,
     round(count(*) * 100 / sum(count(*)) over(partition by icu_admission_year), 1) as proportion
   from recategorize
-  inner join `medicu-biz.latest_one_icu_derived.extended_icu_stays` using(icu_stay_id)
+  inner join `medicu-biz.snapshots_one_icu_derived.extended_icu_stays_20250716` using(icu_stay_id)
   where category is not null and icu_admission_year <= 2024
   group by category, icu_admission_year
 ),

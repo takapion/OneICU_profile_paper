@@ -14,7 +14,7 @@ with
                 / countif(mortality in ('icu', 'in_hospital', 'survival')),
                 1
             ) as in_hospital_mortality
-        from `medicu-biz.latest_one_icu_derived.extended_icu_stays`
+        from `medicu-biz.snapshots_one_icu_derived.extended_icu_stays_20250716`
         where icu_admission_year <= 2024
         group by icu_admission_year
     ),
@@ -24,9 +24,9 @@ with
             round(
                 100 * count(distinct mv.icu_stay_id) / count(distinct ic.icu_stay_id), 1
             ) as mv_proportion
-        from `medicu-biz.latest_one_icu_derived.extended_icu_stays` ic
+        from `medicu-biz.snapshots_one_icu_derived.extended_icu_stays_20250716` ic
         left join
-            `medicu-biz.latest_one_icu.mechanical_ventilations` mv using (icu_stay_id)
+            `medicu-biz.snapshots_one_icu.mechanical_ventilations_20250716` mv using (icu_stay_id)
         where icu_admission_year <= 2024
         group by icu_admission_year
     )
