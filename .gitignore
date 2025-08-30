@@ -3,6 +3,7 @@ fig_sofa_dic.tiff
 
 # patient level data
 data/*.csv
+data/machine_learning/*.csv
 
 # History files
 .Rhistory
