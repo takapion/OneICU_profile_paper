@@ -6,6 +6,9 @@ data/*.csv
 data/machine_learning/*.csv
 output/models/*
 
+# venv
+.venv
+
 # History files
 .Rhistory
 .Rapp.history
