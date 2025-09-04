@@ -126,9 +126,9 @@ Run 03_model_evaluation.ipynb to compute metrics and compare AUROC across OneICU
 2. **Open** your R environment (RStudio or equivalent).
 3. **Install** any missing dependencies with install.packages("<package_name>").
 4. **Run** the scripts in R_scripts/ to:
-  - Load query outputs,
-  - Perform data cleaning/manipulation as needed,
-  - Generate summary tables/figures comparing the databases.
+   - Load query outputs,
+   - Perform data cleaning/manipulation as needed,
+   - Generate summary tables/figures comparing the databases.
 
 ---
 
