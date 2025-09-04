@@ -39,37 +39,37 @@ By running the provided SQL, Python notebooks, and R scripts, researchers can re
 OneICU_profile_paper
 ├── README.md
 ├── sql
-│ ├── OneICU
-│ │ └── ...
-│ ├── MIMIC-IV
-│ │ └── ...
-│ ├── eICU
-│ │ └── ...
-│ └── machine_learning
-│ ├── oneicu
-│ │ └── *.sql
-│ ├── mimiciv
-│ │ └── *.sql
-│ └── eicu
-│ └── *.sql
+│   ├── OneICU
+│   │   └── *.sql
+│   ├── MIMIC-IV
+│   │   └── *.sql
+│   ├── eICU
+│   │   └── *.sql
+│   └── machine_learning
+│       ├── oneicu
+│       │   └── *.sql
+│       ├── mimiciv
+│       │   └── *.sql
+│       └── eicu
+│           └── *.sql
 ├── Python_scripts
-│ ├── 01_train_test_split.ipynb
-│ ├── 02_machine_learning.ipynb
-│ └── 03_model_evaluation.ipynb
+│   ├── 01_train_test_split.ipynb
+│   ├── 02_machine_learning.ipynb
+│   └── 03_model_evaluation.ipynb
 └── R_scripts
-└── ...
+    └── ...
 ```
 
 
-- **sql/**
+- **sql**
   - **OneICU/**, **MIMIC‑IV/**, **eICU/**: SQL scripts to profile each database (e.g., cohort selection, summaries) in Google BigQuery.
   - **machine_learning/**:
     - **oneicu/**, **mimiciv/**, **eicu/**: SQL to extract features/labels for **hypotension prediction** model training.
-- **Python_scripts/**
+- **Python_scripts**
   - **01_train_test_split.ipynb** — creates train/test splits from the extracted datasets.
   - **02_machine_learning.ipynb** — trains models using **H2O AutoML**. We retain two artifacts per database: the **AutoML leaderboard top model** and a **GLM baseline**.
   - **03_model_evaluation.ipynb** — evaluates and **compares AUROC** across OneICU, MIMIC‑IV, and eICU for both the best AutoML model and the GLM model.
-- **R_scripts/**
+- **R_scripts**
   - `.R` scripts for figure generation and comparative analyses of database characteristics.
 
 ---
