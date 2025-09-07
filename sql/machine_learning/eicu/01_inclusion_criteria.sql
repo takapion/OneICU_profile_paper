@@ -16,31 +16,13 @@ with
         from `physionet-data.eicu_crd.vitalperiodic`
         group by patientunitstayid
     ),
-    vitalaperiodic_counts as (
-        select 
-            patientunitstayid,
-            count(case when noninvasivemean is not null then 1 end) as non_invasive_mbp_count
-        from `physionet-data.eicu_crd.vitalaperiodic`
-        group by patientunitstayid
-    ),
-    vitalsign_counts as (
-        select 
-            coalesce(vp.patientunitstayid, va.patientunitstayid) as patientunitstayid,
-            coalesce(vp.rr_count, 0) as rr_count,
-            coalesce(vp.hr_count, 0) as hr_count,
-            coalesce(vp.invasive_mbp_count, 0) as invasive_mbp_count,
-            coalesce(va.non_invasive_mbp_count, 0) as non_invasive_mbp_count,
-            coalesce(vp.spo2_count, 0) as spo2_count
-        from vitalperiodic_counts vp
-        left join vitalaperiodic_counts va using (patientunitstayid)
-    ),
     vitalsign_include as (
         select patientunitstayid as icu_stay_id
-        from vitalsign_counts
+        from vitalperiodic_counts
         where
             rr_count > 0
             and hr_count > 0
-            and (invasive_mbp_count > 0 or non_invasive_mbp_count > 0)
+            and invasive_mbp_count > 0
             and spo2_count > 0
     )
 
