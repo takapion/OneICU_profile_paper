@@ -12,7 +12,7 @@ with
         where
             rr_count > 0
             and hr_count > 0
-            and (invasive_mbp_count > 0 or non_invasive_mbp_count > 0)
+            and invasive_mbp_count > 0
             and spo2_count > 0
     )
 
