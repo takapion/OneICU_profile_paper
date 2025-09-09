@@ -12,7 +12,6 @@ with
             count(case when resp_rate is not null then 1 end) as rr_count,
             count(case when heart_rate is not null then 1 end) as hr_count,
             count(case when mbp is not null then 1 end) as invasive_mbp_count,
-            count(case when mbp_ni is not null then 1 end) as non_invasive_mbp_count,
             count(case when spo2 is not null then 1 end) as spo2_count
         from `medicu-workspace-takapion.mimiciv_derived.vitalsign`
         group by stay_id
@@ -23,7 +22,7 @@ with
         where
             rr_count > 0
             and hr_count > 0
-            and (invasive_mbp_count > 0 or non_invasive_mbp_count > 0)
+            and invasive_mbp_count > 0
             and spo2_count > 0
     )
 
