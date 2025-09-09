@@ -29,18 +29,18 @@ with
             infusionoffset,
             case
                 when drugname like '%mcg/kg/min%'
-                then infusionrate
+                then safe_cast(drugrate as float64)
                 when drugname like '%mcg/kg/hr%'
-                then infusionrate / 60
+                then safe_cast(drugrate as float64) / 60
                 when drugname like '%mcg/min%'
-                then infusionrate / body_weight
+                then safe_cast(drugrate as float64) / body_weight
                 when drugname like '%mcg/hr%'
-                then infusionrate / (60 * body_weight)
+                then safe_cast(drugrate as float64) / (60 * body_weight)
                 when drugname like '%mg/min%'
-                then 1000 * infusionrate / body_weight
+                then 1000 * safe_cast(drugrate as float64) / body_weight
                 when drugname like '%units/min%'
-                then 1000 * infusionrate / body_weight
-                else infusionrate / (0.06 * body_weight)
+                then 1000 * safe_cast(drugrate as float64) / body_weight
+                else safe_cast(drugrate as float64) / (0.06 * body_weight)
             end as norepinephrine_rate_standardized
         from `physionet-data.eicu_crd.infusiondrug`
         inner join weights_imputed using (patientunitstayid)
@@ -55,7 +55,6 @@ with
                 'Norepinephrine (mg/hr)',
                 'Norepinephrine (mg/kg/min)',
                 'Norepinephrine (mg/min)',
-                'Norepinephrine (ml/hr)',
                 'Norepinephrine STD 32 mg Dextrose 5% 282 ml (mcg/min)',
                 'Norepinephrine STD 32 mg Dextrose 5% 500 ml (mcg/min)',
                 'Norepinephrine STD 4 mg Dextrose 5% 250 ml (mcg/min)',
@@ -63,17 +62,12 @@ with
                 'Norepinephrine STD 8 mg Dextrose 5% 250 ml (mcg/min)',
                 'Norepinephrine STD 8 mg Dextrose 5% 500 ml (mcg/min)',
                 'Norepinephrine (units/min)',
-                'norepinephrine Volume (ml) (ml/hr)',
                 -- levophed
                 'Levophed (mcg/kg/min)',
                 'levophed  (mcg/min)',
                 'levophed (mcg/min)',
                 'Levophed (mcg/min)',
-                'Levophed (mg/hr)',
-                'levophed (ml/hr)',
-                'Levophed (ml/hr)',
-                'NSS with LEVO (ml/hr)',
-                'NSS w/ levo/vaso (ml/hr)'
+                'Levophed (mg/hr)'
             )
     ),
     ne_standardized as (
