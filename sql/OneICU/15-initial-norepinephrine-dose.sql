@@ -7,6 +7,7 @@ with
                 partition by female
             ) as median_by_gender
         from `medicu-biz.snapshots_one_icu_derived.extended_icu_stays_20250716`
+        where icu_admission_year <= 2024
     ),
     weights_imputed as (
         select icu_stay_id, coalesce(body_weight, median_by_gender) as body_weight
