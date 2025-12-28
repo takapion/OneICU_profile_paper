@@ -129,7 +129,7 @@ with
             start_time,
             end_time,
             outcome,
-            lead(outcome) over (
+            lead(outcome, 2) over (
                 partition by icu_stay_id
                 order by time_window_index
             ) as outcome_lead
