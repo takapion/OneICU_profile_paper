@@ -1,2 +1,2 @@
 n_patients,respiration_notnull,respiration_notnull_rate,cardiovascular_notnull,cardiovascular_notnull_rate,coagulation_notnull,coagulation_notnull_rate,liver_notnull,liver_notnull_rate,renal_notnull,renal_notnull_rate,cns_notnull,cns_notnull_rate
-118272,75856,64.1,115034,97.3,107787,91.1,102479,86.6,112735,95.3,106148,89.7
+84150,61976,73.6,83877,99.7,80735,95.9,78486,93.3,81651,97.0,78800,93.6
