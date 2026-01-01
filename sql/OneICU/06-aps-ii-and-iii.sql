@@ -6,37 +6,34 @@ with
             percentile_cont(apsii, 0.25) over () as percentile_25,
             percentile_cont(apsii, 0.75) over () as percentile_75
         from `medicu-biz.latest_one_icu_derived.apache2`
-        inner join `medicu-biz.snapshots_one_icu_derived.extended_icu_stays_20250716` using(icu_stay_id)
-        where apsii is not null and icu_admission_year <= 2024
+        inner join `medicu-biz.snapshots_one_icu_derived.extended_icu_stays_20251228` using(icu_stay_id)
+        where apsii is not null
     ),
     apsii_missing as (
         select
             'apsii' as field_name,
             (
                 select count(distinct icu_stay_id)
-                from `medicu-biz.snapshots_one_icu_derived.extended_icu_stays_20250716`
-                where icu_admission_year <= 2024
+                from `medicu-biz.snapshots_one_icu_derived.extended_icu_stays_20251228`
             )
             - count(distinct icu_stay_id) as n_missing,
             round(
                 100 * (
                     (
                         select count(distinct icu_stay_id)
-                        from `medicu-biz.snapshots_one_icu_derived.extended_icu_stays_20250716`
-                        where icu_admission_year <= 2024
+                        from `medicu-biz.snapshots_one_icu_derived.extended_icu_stays_20251228`
                     )
                     - count(distinct icu_stay_id)
                 )
                 / (
                     select count(distinct icu_stay_id)
-                    from `medicu-biz.snapshots_one_icu_derived.extended_icu_stays_20250716`
-                    where icu_admission_year <= 2024
+                    from `medicu-biz.snapshots_one_icu_derived.extended_icu_stays_20251228`
                 ),
                 1
             ) as proportion_missing
         from `medicu-biz.latest_one_icu_derived.apache2`
-        inner join `medicu-biz.snapshots_one_icu_derived.extended_icu_stays_20250716` using(icu_stay_id)
-        where apsii is not null and icu_admission_year <= 2024
+        inner join `medicu-biz.snapshots_one_icu_derived.extended_icu_stays_20251228` using(icu_stay_id)
+        where apsii is not null
     ),
     apsiii_stats as (
         select distinct
@@ -45,37 +42,34 @@ with
             percentile_cont(apsiii, 0.25) over () as percentile_25,
             percentile_cont(apsiii, 0.75) over () as percentile_75
         from `medicu-biz.latest_one_icu_derived.apache3`
-        inner join `medicu-biz.snapshots_one_icu_derived.extended_icu_stays_20250716` using(icu_stay_id)
-        where apsiii is not null and icu_admission_year <= 2024
+        inner join `medicu-biz.snapshots_one_icu_derived.extended_icu_stays_20251228` using(icu_stay_id)
+        where apsiii is not null
     ),
     apsiii_missing as (
         select
             'apsiii' as field_name,
             (
                 select count(distinct icu_stay_id)
-                from `medicu-biz.snapshots_one_icu_derived.extended_icu_stays_20250716`
-                where icu_admission_year <= 2024
+                from `medicu-biz.snapshots_one_icu_derived.extended_icu_stays_20251228`
             )
             - count(distinct icu_stay_id) as n_missing,
             round(
                 100 * (
                     (
                         select count(distinct icu_stay_id)
-                        from `medicu-biz.snapshots_one_icu_derived.extended_icu_stays_20250716`
-                        where icu_admission_year <= 2024
+                        from `medicu-biz.snapshots_one_icu_derived.extended_icu_stays_20251228`
                     )
                     - count(distinct icu_stay_id)
                 )
                 / (
                     select count(distinct icu_stay_id)
-                    from `medicu-biz.snapshots_one_icu_derived.extended_icu_stays_20250716`
-                    where icu_admission_year <= 2024
+                    from `medicu-biz.snapshots_one_icu_derived.extended_icu_stays_20251228`
                 ),
                 1
             ) as proportion_missing
         from `medicu-biz.latest_one_icu_derived.apache3`
-        inner join `medicu-biz.snapshots_one_icu_derived.extended_icu_stays_20250716` using(icu_stay_id)
-        where apsiii is not null and icu_admission_year <= 2024
+        inner join `medicu-biz.snapshots_one_icu_derived.extended_icu_stays_20251228` using(icu_stay_id)
+        where apsiii is not null
     )
 select field_name, median, percentile_25, percentile_75, n_missing, proportion_missing
 from apsii_stats
