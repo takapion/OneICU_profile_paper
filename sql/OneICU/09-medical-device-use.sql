@@ -8,12 +8,11 @@ with
                 * count(distinct icu_stay_id)
                 / (
                     select count(*)
-                    from `medicu-biz.snapshots_one_icu_derived.extended_icu_stays_20250716`
-                    where icu_admission_year <= 2024
+                    from `medicu-biz.snapshots_one_icu_derived.extended_icu_stays_20251228`
                 ),
                 1
             ) as proportion
-        from `medicu-biz.snapshots_one_icu.mechanical_ventilations_20250716`
+        from `medicu-biz.snapshots_one_icu.mechanical_ventilations_20251228`
     ),
     nppv as (
         select
@@ -24,14 +23,12 @@ with
                 * count(distinct icu_stay_id)
                 / (
                     select count(*)
-                    from `medicu-biz.snapshots_one_icu_derived.extended_icu_stays_20250716`
-                    where icu_admission_year <= 2024
+                    from `medicu-biz.snapshots_one_icu_derived.extended_icu_stays_20251228`
                 ),
                 1
             ) as proportion
-        from `medicu-biz.snapshots_one_icu.non_invasive_positive_pressure_ventilations_20250716`
+        from `medicu-biz.snapshots_one_icu.non_invasive_positive_pressure_ventilations_20251228`
         inner join `medicu-biz.snapshots_one_icu_derived.extended_icu_stays_20250716` using(icu_stay_id)
-        where icu_admission_year <= 2024
     ),
     hfo as (
         select
@@ -42,14 +39,12 @@ with
                 * count(distinct icu_stay_id)
                 / (
                     select count(*)
-                    from `medicu-biz.snapshots_one_icu_derived.extended_icu_stays_20250716`
-                    where icu_admission_year <= 2024
+                    from `medicu-biz.snapshots_one_icu_derived.extended_icu_stays_20251228`
                 ),
                 1
             ) as proportion
-        from `medicu-biz.snapshots_one_icu.high_flow_oxygen_therapy_20250716`
-        inner join `medicu-biz.snapshots_one_icu_derived.extended_icu_stays_20250716` using(icu_stay_id)
-        where icu_admission_year <= 2024
+        from `medicu-biz.snapshots_one_icu.high_flow_oxygen_therapy_20251228`
+        inner join `medicu-biz.snapshots_one_icu_derived.extended_icu_stays_20251228` using(icu_stay_id)
     ),
     crrt as (
         select
@@ -60,14 +55,13 @@ with
                 * count(distinct icu_stay_id)
                 / (
                     select count(*)
-                    from `medicu-biz.snapshots_one_icu_derived.extended_icu_stays_20250716`
-                    where icu_admission_year <= 2024
+                    from `medicu-biz.snapshots_one_icu_derived.extended_icu_stays_20251228`
                 ),
                 1
             ) as proportion
-        from `medicu-biz.snapshots_one_icu.renal_replacement_therapy_20250716`
-        inner join `medicu-biz.snapshots_one_icu_derived.extended_icu_stays_20250716` using(icu_stay_id)
-        where type in ('chdf', 'crrt', 'chd', 'chf') and icu_admission_year <= 2024
+        from `medicu-biz.snapshots_one_icu.renal_replacement_therapy_20251228`
+        inner join `medicu-biz.snapshots_one_icu_derived.extended_icu_stays_20251228` using(icu_stay_id)
+        where type in ('chdf', 'crrt', 'chd', 'chf')
     )
 select *
 from mv
