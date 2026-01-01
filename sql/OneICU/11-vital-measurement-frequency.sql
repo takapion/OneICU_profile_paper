@@ -18,7 +18,7 @@ with
         from `medicu-biz.snapshots_one_icu.vital_measurements_20251228`
         inner join
             `medicu-biz.snapshots_one_icu_derived.extended_icu_stays_20251228` using (icu_stay_id)
-        where icu_length_of_stay >= 1 and time >= in_time and time < out_time
+        where timestamp_diff(out_time, in_time, minute) >= 60*24 and time >= in_time and time < out_time
     ),
     vital_count as (
         select
