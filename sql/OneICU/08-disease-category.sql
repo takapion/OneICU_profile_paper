@@ -12,13 +12,12 @@ with recategorize as (
       when category is null then 'others'
       else category
       end as category
-  from `medicu-biz.snapshots_one_icu_derived.extended_icu_stays_20250716`
+  from `medicu-biz.snapshots_one_icu_derived.extended_icu_stays_20251228`
   left join (
     select icu_stay_id, category
-    from `medicu-biz.snapshots_one_icu_derived.unioned_icu_diagnoses_20250716`
+    from `medicu-biz.snapshots_one_icu_derived.unioned_icu_diagnoses_20251228`
     where primary
   ) using(icu_stay_id)
-  where icu_admission_year <= 2024
 )
 select
   category,

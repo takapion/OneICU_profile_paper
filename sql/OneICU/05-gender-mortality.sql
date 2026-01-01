@@ -8,8 +8,7 @@ with
                 then 'female'
                 else 'gender_unknown'
             end as gender
-        from `medicu-biz.snapshots_one_icu_derived.extended_icu_stays_20250716`
-        where icu_admission_year <= 2024
+        from `medicu-biz.snapshots_one_icu_derived.extended_icu_stays_20251228`
     ),
     gender_counts as (
         select gender as field_name, count(*) as count from gender_clean group by gender
@@ -28,8 +27,7 @@ with
                 when er_mortality is false then 'ER_survived'
                 else 'ER_mortality_unknown'
             end as er_death,
-        from `medicu-biz.snapshots_one_icu_derived.extended_icu_stays_20250716`
-        where icu_admission_year <= 2024
+        from `medicu-biz.snapshots_one_icu_derived.extended_icu_stays_20251228`
     ),
     er_mortality_proportions as (
         select
@@ -53,9 +51,8 @@ with
                 then 'In_hospital_mortality_unknown'
                 else 'In_hospital_survived'
             end as in_hospital_death
-        from `medicu-biz.snapshots_one_icu_derived.extended_icu_stays_20250716`
+        from `medicu-biz.snapshots_one_icu_derived.extended_icu_stays_20251228`
         where er_mortality is not TRUE
-        and icu_admission_year <= 2024
     ),
     icu_mortality_proportions as (
         select
