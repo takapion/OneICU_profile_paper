@@ -6,8 +6,7 @@ with
             percentile_cont(body_weight_imputed, 0.5) over (
                 partition by female
             ) as median_by_gender
-        from `medicu-biz.snapshots_one_icu_derived.extended_icu_stays_20250716`
-        where icu_admission_year <= 2024
+        from `medicu-biz.snapshots_one_icu_derived.extended_icu_stays_20251228`
     ),
     weights_imputed as (
         select icu_stay_id, coalesce(body_weight, median_by_gender) as body_weight
@@ -18,7 +17,7 @@ with
             icu_stay_id,
             min_by(unit_per_hour, start_time) as initial_norepinephrine_rate
         from
-            `medicu-biz.snapshots_one_icu_derived.infusion_injection_active_ingredient_rate_20250716`
+            `medicu-biz.snapshots_one_icu_derived.infusion_injection_active_ingredient_rate_20251228`
         where active_ingredient_name = 'noradrenaline'
         group by icu_stay_id
     ),
