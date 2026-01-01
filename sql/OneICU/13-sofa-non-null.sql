@@ -9,10 +9,10 @@ with
             cardiovascular,
             cns,
             renal
-        from `medicu-biz.snapshots_one_icu_derived.sofa_hourly_20250716`
+        from `medicu-biz.snapshots_one_icu_derived.sofa_hourly_20251228`
         inner join
-            `medicu-biz.snapshots_one_icu_derived.extended_icu_stays_20250716` using (icu_stay_id)
-        where icu_length_of_stay >= 1 and icu_admission_year <= 2024
+            `medicu-biz.snapshots_one_icu_derived.extended_icu_stays_20251228` using (icu_stay_id)
+        where timestamp_diff(out_time, in_time, minute) >= 1440
     ),
     overall_stats as (
         select count(distinct icu_stay_id) as n_patients from stayed_more_than_1_day
