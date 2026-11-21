@@ -1,5 +1,6 @@
 select
     o.icu_stay_id,
+    o.subject_id,
     o.time_window_index,
     v.invasive_mbp_median,
     v.hr_median,
@@ -12,7 +13,10 @@ select
     v.lactate,
     v.sodium,
     v.potassium,
-    o.outcome_lead
+    o.outcome_vasopressor_start_lead,
+    o.outcome_low_map_lead,
+    o.outcome_lead,
+    o.window_after_low_map_lead
 from `medicu-workspace-takapion.mimiciv_derived.outcome` o
 inner join `medicu-workspace-takapion.mimiciv_derived.vital_measurements_blood_gas` v
     on o.icu_stay_id = v.icu_stay_id
