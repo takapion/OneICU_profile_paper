@@ -13,7 +13,7 @@ with
             count(case when heart_rate is not null then 1 end) as hr_count,
             count(case when mbp is not null then 1 end) as invasive_mbp_count,
             count(case when spo2 is not null then 1 end) as spo2_count
-        from `medicu-workspace-takapion.mimiciv_derived.vitalsign`
+        from `physionet-data.mimiciv_3_1_derived.vitalsign`
         group by stay_id
     ),
     vitalsign_include as (
