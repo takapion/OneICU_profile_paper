@@ -2,6 +2,7 @@ with
     static_table as (
         select 
             patientunitstayid as icu_stay_id,
+            uniquepid as subject_id,
             case
                 when gender = 1
                 then 0
@@ -14,6 +15,7 @@ with
     )
 select
     icu_stay_id,
+    subject_id,
     female,
     age
 from `medicu-workspace-takapion.eicu_crd_derived.inclusion_criteria`
