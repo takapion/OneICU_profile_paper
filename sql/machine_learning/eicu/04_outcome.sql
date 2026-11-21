@@ -179,30 +179,6 @@ with
         from component_outcomes
     ),
 
-    first_low_map as (
-        select
-            *,
-            -- First observed low-MAP hourly median, including censored windows.
-            -- Compute this before LEAD and before filtering on feature availability.
-            min(case when low_map_observed = 1 then time_window_index end) over (
-                partition by icu_stay_id
-            ) as first_low_map_time_window_index,
-            min(case when low_map_observed = 1 then start_time end) over (
-                partition by icu_stay_id
-            ) as first_low_map_start_time
-        from outcome_labeled
-    ),
-
-    first_low_map_labeled as (
-        select
-            *,
-            case
-                when time_window_index = first_low_map_time_window_index then 1
-                else 0
-            end as is_first_low_map
-        from first_low_map
-    ),
-
     final_outcome as (
         select
             *,
@@ -218,12 +194,25 @@ with
             lead(outcome, 2) over (
                 partition by icu_stay_id
                 order by time_window_index
-            ) as outcome_lead,
-            lead(is_first_low_map, 2) over (
-                partition by icu_stay_id
-                order by time_window_index
-            ) as is_first_low_map_lead
-        from first_low_map_labeled
+            ) as outcome_lead
+        from outcome_labeled
+    ),
+
+    outcome_with_window_flag as (
+        select
+            *,
+            -- Keep the first positive low-MAP target row: its flag is 0.
+            -- All later rows in this ICU stay have flag 1, even after MAP recovers.
+            -- Compute this before filtering on features or composite outcomes.
+            coalesce(
+                max(case when outcome_low_map_lead = 1 then 1 else 0 end) over (
+                    partition by icu_stay_id
+                    order by time_window_index
+                    rows between unbounded preceding and 1 preceding
+                ),
+                0
+            ) as window_after_low_map_lead
+        from final_outcome
     )
 
 select
@@ -238,7 +227,6 @@ select
     outcome_vasopressor_start_lead,
     outcome_low_map_lead,
     outcome_lead,
-    is_first_low_map,
-    is_first_low_map_lead
-from final_outcome
+    window_after_low_map_lead
+from outcome_with_window_flag
 order by icu_stay_id, time_window_index
