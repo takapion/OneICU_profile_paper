@@ -1,7 +1,8 @@
 with
     static_table as (
-        select 
+        select
             stay_id as icu_stay_id,
+            subject_id,
             case
                 when gender = 'F'
                 then 1
@@ -14,6 +15,7 @@ with
     )
 select
     icu_stay_id,
+    subject_id,
     female,
     age
 from `medicu-workspace-takapion.mimiciv_derived.inclusion_criteria`
