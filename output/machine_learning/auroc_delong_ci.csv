@@ -1,0 +1,6 @@
+model,dataset,model_tag,n_total,n_used,n_pos,n_neg,auroc,ci95_lo,ci95_hi,se_from_ci,mlstatkit_method,ci_source
+OneICU 1-minute MAP model,oneicu,all_features,539659,539659,69159,470500,0.9415179482219806,0.9405979981272178,0.9424378983167435,0.0004693622932463607,delong,MLstatkit Delong_test (vs prevalence baseline)
+OneICU 5-minute MAP model,oneicu,mbp_5min_only,539659,539659,69159,470500,0.9391015458548682,0.9381583259936433,0.940044765716093,0.0004812346230738821,delong,MLstatkit Delong_test (vs prevalence baseline)
+OneICU hourly MAP model,oneicu,mbp_00_only,539659,539659,69159,470500,0.9008674658723167,0.8995697596182416,0.9021651721263918,0.0006620950275893387,delong,MLstatkit Delong_test (vs prevalence baseline)
+eICU (5-minute MAP model),eicu,all_features,229628,229628,26093,203535,0.8989340567919389,0.8969257053468497,0.9009424082370282,0.0010246691046373788,delong,MLstatkit Delong_test (vs prevalence baseline)
+MIMIC-IV (hourly MAP model),mimiciv,all_features,799779,799779,95714,704065,0.7993056034348918,0.7977054773053696,0.800905729564414,0.0008163908824092887,delong,MLstatkit Delong_test (vs prevalence baseline)

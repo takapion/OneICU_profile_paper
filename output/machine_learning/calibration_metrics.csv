@@ -1,0 +1,6 @@
+model,dataset,model_tag,n,prevalence,brier_score,n_bins,calibration_plot
+OneICU 1-minute MAP model,oneicu,all_features,539659,0.12815314856233287,0.05316160345562405,10,../output/machine_learning/calibration/calibration_oneicu_all_features.tiff
+OneICU 5-minute MAP model,oneicu,mbp_5min_only,539659,0.12815314856233287,0.05416306561294523,10,../output/machine_learning/calibration/calibration_oneicu_mbp_5min_only.tiff
+OneICU hourly MAP model,oneicu,mbp_00_only,539659,0.12815314856233287,0.06679020565576994,10,../output/machine_learning/calibration/calibration_oneicu_mbp_00_only.tiff
+eICU (5-minute MAP model),eicu,all_features,229628,0.11363161286951069,0.06484638788659365,10,../output/machine_learning/calibration/calibration_eicu_all_features.tiff
+MIMIC-IV (hourly MAP model),mimiciv,all_features,799779,0.11967556037355319,0.08737875268181505,10,../output/machine_learning/calibration/calibration_mimiciv_all_features.tiff
