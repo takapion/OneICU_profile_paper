@@ -3,6 +3,7 @@ with
         select
             e.icu_stay_id,
             s.subject_id,
+            e.hospital_id,
             e.female,
             e.age
         from `medicu-biz.snapshots_one_icu_derived.extended_icu_stays_20250716` e
@@ -12,6 +13,7 @@ with
 select
     icu_stay_id,
     subject_id,
+    hospital_id,
     female,
     age
 from `medicu-production.research_database_description_2024.01_inclusion_criteria`
