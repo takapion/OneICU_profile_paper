@@ -3,6 +3,7 @@ with
         select
             e.icu_stay_id,
             s.subject_id,
+            e.hospital_id,
             safe_cast(e.age as float64) as age
         from `medicu-biz.snapshots_one_icu_derived.extended_icu_stays_20250716` e
         left join `medicu-biz.snapshots_one_icu.icu_stays_20250716` s
@@ -13,6 +14,7 @@ with
         select
             b.icu_stay_id,
             d.subject_id,
+            d.hospital_id,
             b.time_window_index,
             b.start_time,
             b.end_time,
@@ -101,6 +103,7 @@ with
         select
             b.icu_stay_id,
             b.subject_id,
+            b.hospital_id,
             b.time_window_index,
             b.start_time,
             b.end_time,
@@ -197,6 +200,7 @@ with
 select
     icu_stay_id,
     subject_id,
+    hospital_id,
     time_window_index,
     start_time,
     end_time,

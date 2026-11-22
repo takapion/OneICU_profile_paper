@@ -1,6 +1,7 @@
 select
     o.icu_stay_id,
     o.subject_id,
+    o.hospital_id,
     o.time_window_index,
     v.hr_median,
     v.rr_median,
